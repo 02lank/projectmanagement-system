@@ -18,7 +18,7 @@ class CreateTasksTable extends Migration
             $table->unsignedInteger('account_id')->nullable($value = true);
             $table->foreign('account_id')->references('account_id')->on('accounts');
             $table->string('task_description', 100);
-            $table->boolean('status');
+            $table->boolean('status')->default(0);
             $table->timestamps();
         });
     }
