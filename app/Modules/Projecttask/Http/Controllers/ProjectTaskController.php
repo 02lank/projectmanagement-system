@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Modules\ProjectTaskController\Http\Controllers;
 
 use Illuminate\Http\Request;
 
