@@ -13,6 +13,7 @@ class Task extends AbstractModel
     protected $fillable = [
         'task_description', 
         'status', 
-        'account_id'
+        'account_id',
+        'project_id'
     ];
 }

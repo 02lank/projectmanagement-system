@@ -15,14 +15,63 @@ class TaskController extends Controller
      *
      * @return \Damnyan\Cmn\Services\ApiResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        //get Tasks
-        $tasks = Task::paginate(15);
-        return (new ApiResponse)->resource($tasks); #collection when returning list
+        $payload = $request->only('project_id');
+        $rules = [
+            'project_id' => 'required'
+        ];
 
+        $validator = Validator::make($payload, $rules);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json(
+                [
+                    "message" => "Unprocessable Entity",
+                    "errors" => $errors
+                ],
+                422
+            );
+        }
+
+        $project_id = $request->input('project_id');
+        $payload = $request->all();
+        $task = Task::where('project_id', $project_id)
+                        ->orderBy('status', 'desc')
+                        ->get();
+        return (new ApiResponse)->resource($task);
     }
 
+
+    public function indexUser(Request $request)
+    {
+        $payload = $request->only('account_id', 'project_id');
+        $rules = [
+            'project_id' => 'required',
+            'account_id' => 'required'
+        ];
+
+        $validator = Validator::make($payload, $rules);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json(
+                [
+                    "message" => "Unprocessable Entity",
+                    "errors" => $errors
+                ],
+                422
+            );
+        }
+
+        $account_id = $request->input('account_id');
+        $project_id = $request->input('project_id');
+        $payload = $request->all();
+        $task = Task::where('account_id', $account_id)
+                        ->where('project_id', $project_id)
+                        ->orderBy('status', 'asc')
+                        ->get();
+        return (new ApiResponse)->resource($task);
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -31,8 +80,9 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        $payload = $request->only('task_description');
+        $payload = $request->only('account_id', 'project_id', 'task_description');
         $rules = [
+            'project_id' => 'required',
             'task_description' => 'required'
         ];
 
@@ -75,12 +125,11 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function updateStatus(Request $request, $id)
     {
-        $payload = $request->only('status', 'account_id');
+        $payload = $request->only('status');
         $rules = [
-            'status'   => 'required',
-            'account_id' => 'required'
+            'status'   => 'required'
         ];
 
         $validator = Validator::make($payload, $rules);
@@ -101,7 +150,14 @@ class TaskController extends Controller
         return (new ApiResponse)->resource($task);
     }
 
-
+    public function update(Request $request, $id)
+    {
+        $payload = $request->only('account_id', 'task_description');
+        $payload = $request->all();
+        $task = Task::findOrFail($id);
+        $task->update($payload);
+        return (new ApiResponse)->resource($task);
+    }
     /**
      * Remove the specified resource from storage.
      *
