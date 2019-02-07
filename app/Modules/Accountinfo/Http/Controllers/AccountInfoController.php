@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use Damnyan\Cmn\Services\ApiResponse;
 use Illuminate\Support\Facades\Validator;
 
-class AccountController extends Controller
+class AccountInfoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -40,11 +40,11 @@ class AccountController extends Controller
         // if ($account->save()) {
         //     return new AccountResource($account);
         // }
-        $payload = $request->only('accountinfo_id', 'firstName', 'lastName');
+        $payload = $request->only('firstName', 'lastName', 'email');
         $rules = [
-            'accountinfo_id'   => 'required',
             'firstName' => 'required',
-            'lastName' => 'required'
+            'lastName' => 'required',
+            'email' => 'required'
         ];
         $validator = Validator::make($payload, $rules);
         if ($validator->fails()) {
@@ -58,8 +58,8 @@ class AccountController extends Controller
             );
         }
         $payload = $request->all();
-        $account = Account::create($payload);
-        return (new ApiResponse)->resource($account);
+        $accountinfo = AccountInfo::create($payload);
+        return (new ApiResponse)->resource($accountinfo);
     }
     
     /**
@@ -69,10 +69,10 @@ class AccountController extends Controller
     *
     * @return \Damnyan\Cmn\Services\ApiResponse
     */
-    public function show($account_id)
+    public function show($accountinfo_id)
     {
-        $account = Account::findOrFail($account_id);
-        return (new ApiResponse)->resource($account);
+        $accountinfo = AccountInfo::findOrFail($accountinfo_id);
+        return (new ApiResponse)->resource($accountinfo);
     }
 
     /**
@@ -82,10 +82,11 @@ class AccountController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $account_id)
+    public function update(Request $request, $accountinfo_id)
     {
-        $account = Account::findOrFail($account_id);
-        $account->update($request->only('username', 'password'));
+        $accountinfo = AccountInfo::findOrFail($accountinfo_id);
+        $accountinfo->update($request->only('firstName', 'lastName', 'email'));
+        return (new ApiResponse)->resource($accountinfo);
 
     }
 
@@ -95,7 +96,7 @@ class AccountController extends Controller
      * @param  int  $id
      * @return \Damnyan\Cmn\Services\ApiResponse
      */
-    public function destroy($account_id)
+    public function destroy($accountinfo_id)
     {
         // // DELETE ACCOUNT
         // $account= Account::findOrFail($account_id);
@@ -103,8 +104,9 @@ class AccountController extends Controller
         // if ($account->delete()) {
         //     return new AccountResource($account);
         // }
-        $account = Account::findOrFail($account_id);
-        $account->delete();
-        return (new ApiResponse)->resource($account);
+        $accountinfo = AccountInfo
+        ::findOrFail($accountinfo_id);
+        $accountinfo->delete();
+        return (new ApiResponse)->resource($accountinfo);
     }
 }
