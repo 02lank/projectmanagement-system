@@ -37,7 +37,6 @@ class TaskController extends Controller
         $project_id = $request->input('project_id');
         $payload = $request->all();
         $task = Task::where('project_id', $project_id)
-                        ->orderBy('status', 'desc')
                         ->get();
         return (new ApiResponse)->resource($task);
     }
@@ -68,7 +67,6 @@ class TaskController extends Controller
         $payload = $request->all();
         $task = Task::where('account_id', $account_id)
                         ->where('project_id', $project_id)
-                        ->orderBy('status', 'asc')
                         ->get();
         return (new ApiResponse)->resource($task);
     }
