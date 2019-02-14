@@ -82,7 +82,7 @@ class ProjectController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $id222222
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $project_id)
@@ -112,4 +112,3 @@ class ProjectController extends Controller
         return (new ApiResponse)->resource($project);
     }
 }
-
