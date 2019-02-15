@@ -12,8 +12,9 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
 Route::get('/', function(){
     return [
-        "APP_NAME" => 'Vlog'
+        "APP_NAME" => 'Test'
     ];
 });
