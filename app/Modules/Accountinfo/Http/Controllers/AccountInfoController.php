@@ -57,7 +57,6 @@ class AccountInfoController extends Controller
                 422
             );
         }
-        $payload = $request->all();
         $accountinfo = AccountInfo::create($payload);
         return (new ApiResponse)->resource($accountinfo);
     }

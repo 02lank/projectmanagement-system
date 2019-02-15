@@ -57,7 +57,6 @@ class AccountController extends Controller
                 422
             );
         }
-        $payload = $request->all();
         $account = Account::create($payload);
         return (new ApiResponse)->resource($account);
     }
@@ -86,6 +85,7 @@ class AccountController extends Controller
     {
         $account = Account::findOrFail($account_id);
         $account->update($request->only('username', 'password'));
+        return (new ApiResponse)->resource($account);
 
     }
 
