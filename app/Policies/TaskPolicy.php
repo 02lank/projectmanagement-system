@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Modules\Models\Account;
+use App\Modules\Account\Models\Account;
 use App\Task;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -17,9 +17,9 @@ class TaskPolicy
      * @param  \App\Task  $task
      * @return mixed
      */
-    public function view(Account $account, Task $task)
+    public function view(Account $Account, Task $task)
     {
-        //
+        return $task->account_id == $account->account_id;
     }
 
     /**
@@ -28,7 +28,7 @@ class TaskPolicy
      * @param  \App\Account  $Account
      * @return mixed
      */
-    public function create(Account $account)
+    public function create(Account $Account)
     {
         //
     }
@@ -40,7 +40,7 @@ class TaskPolicy
      * @param  \App\Task  $task
      * @return mixed
      */
-    public function update(Account $account, Task $task)
+    public function update(Account $Account, Task $task)
     {
         //
     }
