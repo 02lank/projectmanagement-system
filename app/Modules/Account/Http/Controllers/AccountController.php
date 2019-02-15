@@ -57,9 +57,6 @@ class AccountController extends Controller
                 422
             );
         }
-        $hash = bcrypt('ej');
-        echo $hash;
-        $payload = $request->all();
         $account = Account::create($payload);
         return (new ApiResponse)->resource($account);
     }
