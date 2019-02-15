@@ -7,7 +7,7 @@ use Damnyan\Cmn\Abstracts\AbstractModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Damnyan\Cmn\Traits\Models\CreatorUpdaterTrait;
 
-class AccountInfo extends Model
+class AccountInfo extends AbstractModel
 {
     /**
     * The database table used by the model.
