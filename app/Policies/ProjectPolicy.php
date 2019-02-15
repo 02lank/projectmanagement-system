@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Account;
-use App\Project;
+use App\Modules\Models\Account;
+use App\Modules\Models\Project;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ProjectPolicy
@@ -11,9 +11,9 @@ class ProjectPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view the project.
+     * Determine whether the Account can view the project.
      *
-     * @param  \App\User  $user
+     * @param  \App\Account  $Account
      * @param  \App\Project  $project
      * @return mixed
      */
@@ -23,60 +23,60 @@ class ProjectPolicy
     }
 
     /**
-     * Determine whether the user can create projects.
+     * Determine whether the Account can create projects.
      *
-     * @param  \App\User  $user
+     * @param  \App\Account  $Account
      * @return mixed
      */
-    public function create(User $user)
+    public function create(Account $Account)
     {
         //
     }
 
     /**
-     * Determine whether the user can update the project.
+     * Determine whether the Account can update the project.
      *
-     * @param  \App\User  $user
+     * @param  \App\Account  $Account
      * @param  \App\Project  $project
      * @return mixed
      */
-    public function update(User $user, Project $project)
+    public function update(Account $Account, Project $project)
     {
         //
     }
 
     /**
-     * Determine whether the user can delete the project.
+     * Determine whether the Account can delete the project.
      *
-     * @param  \App\User  $user
+     * @param  \App\Account  $Account
      * @param  \App\Project  $project
      * @return mixed
      */
-    public function delete(User $user, Project $project)
+    public function delete(Account $Account, Project $project)
     {
         //
     }
 
     /**
-     * Determine whether the user can restore the project.
+     * Determine whether the Account can restore the project.
      *
-     * @param  \App\User  $user
+     * @param  \App\Account  $Account
      * @param  \App\Project  $project
      * @return mixed
      */
-    public function restore(User $user, Project $project)
+    public function restore(Account $Account, Project $project)
     {
         //
     }
 
     /**
-     * Determine whether the user can permanently delete the project.
+     * Determine whether the Account can permanently delete the project.
      *
-     * @param  \App\User  $user
+     * @param  \App\Account  $Account
      * @param  \App\Project  $project
      * @return mixed
      */
-    public function forceDelete(User $user, Project $project)
+    public function forceDelete(Account $Account, Project $project)
     {
         //
     }
