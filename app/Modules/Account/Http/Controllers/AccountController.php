@@ -54,7 +54,6 @@ class AccountController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
-        $payload = $request->all();
         $account = Account::create($payload);
         $token = JWTAuth::fromAccount($account);
         return response()->json(compact('account','token'),201);
@@ -85,6 +84,7 @@ class AccountController extends Controller
     {
         $account = Account::findOrFail($account_id);
         $account->update($request->only('username', 'password'));
+        return (new ApiResponse)->resource($account);
 
     }
 

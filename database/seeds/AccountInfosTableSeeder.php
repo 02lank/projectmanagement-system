@@ -12,6 +12,6 @@ class AccountInfosTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\AccountInfo::class, 15)->create();
+        factory(App\Modules\AccountInfo\Models\AccountInfo::class, 15)->create();
     }
 }

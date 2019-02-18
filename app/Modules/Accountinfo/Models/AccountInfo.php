@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Damnyan\Cmn\Traits\Models\CreatorUpdaterTrait;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+
 class AccountInfo extends Authenticatable implements JWTSubject
 {
     use Notifiable;

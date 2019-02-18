@@ -62,6 +62,7 @@ class AccountInfoController extends Controller
         $accountinfo = AccountInfo::create($payload);       
         $token = JWTAuth::fromUser($accountinfo);
         return response()->json(compact('accountinfo','token'),201);
+        $accountinfo = AccountInfo::create($payload);
         return (new ApiResponse)->resource($accountinfo);
     }
     
