@@ -40,11 +40,17 @@ class AccountController extends Controller
         // if ($account->save()) {
         //     return new AccountResource($account);
         // }
-        $payload = $request->only('user_id', 'username', 'password');
+        $payload = $request->only('user_id', 
+                                    'username', 
+                                    'password', 
+                                    'accountinfo_id', 
+                                    'team_id');
         $rules = [
             'user_id'   => 'required',
             'username' => 'required',
-            'password' => 'required'
+            'password' => 'required',
+            'accountinfo_id' => 'required',
+            'team_id' => 'required'
         ];
         $validator = Validator::make($payload, $rules);
         if ($validator->fails()) {
@@ -56,9 +62,18 @@ class AccountController extends Controller
                 ],
                 422
             );
-        }
-        $account = Account::create($payload);
-        return (new ApiResponse)->resource($account);
+        } else {
+            $account = new Account;
+            $account -> user_id = request('user_id');
+            $account -> username = request('username');
+            $account -> password = bcrypt(request('password'));
+            $account -> accountinfo_id = request('accountinfo_id');
+            $account -> team_id = request('team_id');
+            $account -> save();
+            return (new ApiResponse)->resource($account);
+            }
+        // $account = Account::create($payload);
+        // return (new ApiResponse)->resource($account);
     }
     
     /**
