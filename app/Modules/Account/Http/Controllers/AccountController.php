@@ -53,11 +53,20 @@ class AccountController extends Controller
         $validator = Validator::make($payload, $rules);
         if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
+        } else {
+            $account = new Account;
+            $account -> user_id = request('user_id');
+            $account -> username = request('username');
+            $account -> password = bcrypt(request('password'));
+            $account -> accountinfo_id = request('accountinfo_id');
+            $account -> team_id = request('team_id');
+            $token = JWTAuth::fromUser($account);
+            $account -> save();
+            return response()->json(compact('account','token'),201);
+            // return (new ApiResponse) -> response($account);
         }
-        $account = Account::create($payload);
-        $token = JWTAuth::fromAccount($account);
-        return response()->json(compact('account','token'),201);
-        return (new ApiResponse)->resource($account);
+        // $account = Account::create($payload);
+        // return (new ApiResponse)->resource($account);
     }
     
     /**
