@@ -7,7 +7,8 @@ use App\Modules\AccountInfo\Models\AccountInfo;
 use App\Http\Controllers\Controller;
 use Damnyan\Cmn\Services\ApiResponse;
 use Illuminate\Support\Facades\Validator;
-
+use JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 class AccountInfoController extends Controller
 {
     /**
@@ -58,7 +59,9 @@ class AccountInfoController extends Controller
             );
         }
         $payload = $request->all();
-        $accountinfo = AccountInfo::create($payload);
+        $accountinfo = AccountInfo::create($payload);       
+        $token = JWTAuth::fromUser($accountinfo);
+        return response()->json(compact('accountinfo','token'),201);
         return (new ApiResponse)->resource($accountinfo);
     }
     
@@ -108,5 +111,29 @@ class AccountInfoController extends Controller
         ::findOrFail($accountinfo_id);
         $accountinfo->delete();
         return (new ApiResponse)->resource($accountinfo);
+    }
+    public function getAuthenticatedUser()
+    {
+        try {
+
+                if (! $user = JWTAuth::parseToken()->authenticate()) {
+                        return response()->json(['user_not_found'], 404);
+                }
+
+        } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+
+                return response()->json(['token_expired'], $e->getStatusCode());
+
+        } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+
+                return response()->json(['token_invalid'], $e->getStatusCode());
+
+        } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
+
+                return response()->json(['token_absent'], $e->getStatusCode());
+
+        }
+
+            return response()->json(compact('user'));
     }
 }

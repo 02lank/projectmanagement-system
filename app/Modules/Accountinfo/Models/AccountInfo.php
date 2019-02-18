@@ -1,14 +1,16 @@
 <?php
 
 namespace App\Modules\AccountInfo\Models;
-
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 use Damnyan\Cmn\Abstracts\AbstractModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Damnyan\Cmn\Traits\Models\CreatorUpdaterTrait;
-
-class AccountInfo extends Model
+use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+class AccountInfo extends Authenticatable implements JWTSubject
 {
+    use Notifiable;
     /**
     * The database table used by the model.
     *
@@ -67,5 +69,12 @@ class AccountInfo extends Model
         'created_at',
         'updated_at'
     ];
-
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 }

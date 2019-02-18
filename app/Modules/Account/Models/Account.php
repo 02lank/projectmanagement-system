@@ -6,9 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 use Damnyan\Cmn\Abstracts\AbstractModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Damnyan\Cmn\Traits\Models\CreatorUpdaterTrait;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class Account extends AbstractModel
+class Account extends Authenticatable implements JWTSubject
 {
+    use Notifiable;
     /**
     * The database table used by the model.
     *
@@ -45,8 +49,11 @@ class Account extends AbstractModel
     * @var array
     */
     protected $fillable = [
+        'user_id',
         'username',
-        'password'
+        'password',
+        'accountinfo_id',
+        'team_id'
     ];
 
        /**
@@ -66,5 +73,12 @@ class Account extends AbstractModel
         'created_at',
         'updated_at'
     ];
-
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 }
