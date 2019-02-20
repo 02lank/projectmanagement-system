@@ -13,4 +13,5 @@ class Team extends AbstractModel
         'team_id',
         'team_name'
     ];
+    
 }

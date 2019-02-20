@@ -97,5 +97,8 @@ class Account extends Authenticatable implements JWTSubject
         'created_at',
         'updated_at'
     ];
-
+    public function accountinfo()
+    {
+        return $this->hasOne('App\Modules\Accountinfo\Models\AccountInfo', 'accountinfo_id');
+    }
 }

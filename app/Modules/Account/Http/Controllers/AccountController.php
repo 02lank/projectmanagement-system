@@ -122,4 +122,12 @@ class AccountController extends Controller
         $account->delete();
         return (new ApiResponse)->resource($account);
     }
+    public function showTeam($id)
+    {
+        $accounts = Account::where('team_id', $id)
+                        ->with('accountinfo')
+                        ->get();   
+        return (new ApiResponse)->resource($accounts); 
+    }
+
 }
