@@ -38,11 +38,13 @@ class TaskController extends Controller
 
         $project_id = $request->input('project_id');
         $payload = $request->all();
-        $task = Task::where('project_id', $project_id)
-                        ->get();
-        return (new ApiResponse)->resource($task);
+        $tasks = Task::where('project_id', $project_id)
+                        ->with('account', 'account.accountinfo')
+                        ->get();   
+        // $tasks = Task::find(1)->account->accountinfo;
+        return (new ApiResponse)->resource($tasks);
     }
-
+  
 
     public function indexUser(Request $request)
     {

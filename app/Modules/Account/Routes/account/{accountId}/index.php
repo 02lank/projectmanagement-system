@@ -4,5 +4,6 @@ Route::group(
         Route::get('/', 'AccountController@show');
         Route::put('/', 'AccountController@update');
         Route::delete('/', 'AccountController@destroy');
+        Route::get('/team', 'AccountController@showTeam');
     }
 );

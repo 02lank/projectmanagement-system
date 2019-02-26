@@ -2,11 +2,10 @@
 namespace App\Modules\Task\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
-//use Illuminate\Database\Eloquent\Model;
 use Damnyan\Cmn\Abstracts\AbstractModel;
 use Damnyan\Cmn\Traits\Models\CreatorUpdaterTrait;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-
+use Illuminate\Database\Eloquent\Model;
 class Task extends Authenticatable implements JWTSubject
 {
     public $primaryKey = 'task_id';
@@ -26,4 +25,9 @@ class Task extends Authenticatable implements JWTSubject
         'account_id',
         'project_id'
     ];
+    
+    public function account()
+    {
+        return $this->hasOne('App\Modules\Account\Models\Account', 'account_id');
+    }
 }

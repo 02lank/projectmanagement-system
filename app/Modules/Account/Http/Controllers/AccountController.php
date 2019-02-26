@@ -153,4 +153,12 @@ class AccountController extends Controller
 
         return response()->json(compact('user'));
     }
+    public function showTeam($id)
+    {
+        $accounts = Account::where('team_id', $id)
+                        ->with('accountinfo')
+                        ->get();   
+        return (new ApiResponse)->resource($accounts); 
+    }
+
 }
