@@ -19,7 +19,7 @@ class CreateAccountsTable extends Migration
             $table->foreign('user_id')->references('user_id')->on('UserTypes');
             $table->unsignedInteger('accountinfo_id');
             $table->foreign('accountinfo_id')->references('accountinfo_id')->on('AccountInfos');
-            $table->unsignedInteger('team_id');
+            $table->unsignedInteger('team_id')->nullable($value = true);
             $table->foreign('team_id')->references('team_id')->on('teams');
             $table->string('username')->unique();
             $table->string('password');

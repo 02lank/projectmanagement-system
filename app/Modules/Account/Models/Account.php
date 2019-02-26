@@ -97,5 +97,4 @@ class Account extends Authenticatable implements JWTSubject
         'created_at',
         'updated_at'
     ];
-
 }

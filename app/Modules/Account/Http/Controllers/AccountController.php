@@ -7,7 +7,9 @@ use App\Modules\Account\Models\Account;
 use App\Http\Controllers\Controller;
 use Damnyan\Cmn\Services\ApiResponse;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Facades\Hash;
+use JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 class AccountController extends Controller
 {
     /**
@@ -40,11 +42,7 @@ class AccountController extends Controller
         // if ($account->save()) {
         //     return new AccountResource($account);
         // }
-        $payload = $request->only('user_id', 
-                                    'username', 
-                                    'password', 
-                                    'accountinfo_id', 
-                                    'team_id');
+        $payload = $request->only('user_id', 'username', 'password', 'accountinfo_id', 'team_id');
         $rules = [
             'user_id'   => 'required',
             'username' => 'required',
@@ -54,14 +52,7 @@ class AccountController extends Controller
         ];
         $validator = Validator::make($payload, $rules);
         if ($validator->fails()) {
-            $errors = $validator->errors();
-            return response()->json(
-                [
-                    "message" => "Unprocessable Entity",
-                    "errors" => $errors
-                ],
-                422
-            );
+            return response()->json($validator->errors()->toJson(), 400);
         } else {
             $account = new Account;
             $account -> user_id = request('user_id');
@@ -69,9 +60,11 @@ class AccountController extends Controller
             $account -> password = bcrypt(request('password'));
             $account -> accountinfo_id = request('accountinfo_id');
             $account -> team_id = request('team_id');
+            $token = JWTAuth::fromUser($account);
             $account -> save();
-            return (new ApiResponse)->resource($account);
-            }
+            return response()->json(compact('account','token'),201);
+            // return (new ApiResponse) -> response($account);
+        }
         // $account = Account::create($payload);
         // return (new ApiResponse)->resource($account);
     }
@@ -121,5 +114,43 @@ class AccountController extends Controller
         $account = Account::findOrFail($account_id);
         $account->delete();
         return (new ApiResponse)->resource($account);
+    }
+    public function authenticate(Request $request)
+    {
+        $credentials = $request->only('username', 'password');
+
+        try {
+            if (! $token = JWTAuth::attempt($credentials)) {
+                return response()->json(['error' => 'invalid_credentials'], 400);
+            }
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'could_not_create_token'], 500);
+        }
+
+        return response()->json(compact('token'));
+    }
+    public function getAuthenticatedUser()
+    {
+        try {
+
+                if (! $user = JWTAuth::parseToken()->authenticate()) {
+                        return response()->json(['user_not_found'], 404);
+                }
+
+        } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+
+                return response()->json(['token_expired'], $e->getStatusCode());
+
+        } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+
+                return response()->json(['token_invalid'], $e->getStatusCode());
+
+        } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
+
+                return response()->json(['token_absent'], $e->getStatusCode());
+
+        }
+
+        return response()->json(compact('user'));
     }
 }

@@ -3,13 +3,27 @@
 namespace App\Modules\Project\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 use Damnyan\Cmn\Abstracts\AbstractModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Damnyan\Cmn\Traits\Models\CreatorUpdaterTrait;
 
-
-class Project extends Model
+class Project extends Authenticatable implements JWTSubject
 {
+    use Notifiable;
+
+    public $primaryKey = 'project_id';
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
     /**
     * The database table used by the model.
     *
@@ -22,12 +36,7 @@ class Project extends Model
     * @var string
     */
     protected $resourceName = 'Projects';
-    /**
-    * The primary key used by the model.
-    *
-    * @var string
-    */
-    protected $primaryKey = 'project_id';
+
     /**
     * The "type" of the auto-incrementing ID.
     *

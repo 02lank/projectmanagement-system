@@ -1,7 +1,7 @@
 <?php
 Route::group(
-    ['middleware' => []], function () {
-        Route::get('/', 'AccountInfoController@index');
-        Route::post('/', 'AccountInfoController@store');
+    ['middleware' => ['jwt.verify']], function () {
+        Route::get('/', 'AccountInfoController@index');     
     }
 );
+Route::post('/', 'AccountInfoController@store');
