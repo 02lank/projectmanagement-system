@@ -1,7 +1,7 @@
 <?php
 
 Route::group(
-    ['middleware' => []], function () {
+    ['middleware' => ['jwt.verify']], function () {
         Route::get('/', 'TaskController@show');
         Route::put('/status', 'TaskController@updateStatus');
         Route::put('/', 'TaskController@update');

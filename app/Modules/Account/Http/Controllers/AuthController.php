@@ -109,6 +109,6 @@ class AuthController extends Controller
 
         }
 
-        return response()->json(compact('account'));
+        return response()->json(compact('user'));
     }
 }

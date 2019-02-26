@@ -7,7 +7,9 @@ use App\Modules\Project\Models\Project;
 use App\Http\Controllers\Controller;
 use Damnyan\Cmn\Services\ApiResponse;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Facades\Hash;
+use JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 class ProjectController extends Controller
 {
     /**

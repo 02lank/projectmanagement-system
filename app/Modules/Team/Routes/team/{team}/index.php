@@ -1,6 +1,6 @@
 <?php
 Route::group(
-    ['middleware' => []], function () {
+    ['middleware' => ['jwt.verify']], function () {
         Route::get('/', 'TeamController@show');
         Route::put('/', 'TeamController@update');
         Route::delete('/', 'TeamController@destroy');
