@@ -71,11 +71,11 @@ class AccountController extends Controller
             $account -> team_id = request('team_id');
             $account -> save();
             return (new ApiResponse)->resource($account);
-            }
-        // $account = Account::create($payload);
-        // return (new ApiResponse)->resource($account);
+                // $account = Account::create($payload);
+                // return (new ApiResponse)->resource($account);
+        }
     }
-    
+     
     /**
     * Display the specified resource.
     *
@@ -114,7 +114,9 @@ class AccountController extends Controller
     {
         // // DELETE ACCOUNT
         // $account= Account::findOrFail($account_id);
-
+        // 
+        //
+        // 
         // if ($account->delete()) {
         //     return new AccountResource($account);
         // }
